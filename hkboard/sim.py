@@ -128,7 +128,7 @@ class Sim:
             self.assign[k] = b
             self.moves += 1
             self.moved.add(self.tasks[k]["room"])
-            self.log.append((why, k, b))
+            self.log.append((getattr(self, "now", 0), why, k, b))
 
     def floor_pen(self, b, room):
         floors = {self.rooms[self.tasks[j]["room"]]["floor"] for j in self.pending_of(b)}
@@ -318,6 +318,7 @@ class Sim:
                     e["who"] = self.on[e["who"] % len(self.on)]
         ei = 0
         for t in range(OPS["shift_start"], OPS["hard_stop"] + 1):
+            self.now = t
             for a in self.on:
                 st = self.att[a]
                 if st["cur"] and st["free"] <= t:
